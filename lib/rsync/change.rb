@@ -16,13 +16,14 @@ module Rsync
     # The filename associated with this change.
     # @return [String]
     def filename
-      @data[12..-1]
+      matches = @data.match /^.{9,11}\s(.*)$/
+      matches[1]
     end
 
     # Whether the file was changed or not.
     # @return [Boolean]
     def changed?
-      if update_type == :no_change
+      if update_type == :no_update
         false
       else
         true
@@ -34,11 +35,11 @@ module Rsync
     def summary
       if update_type == :message
         message
-      elsif update_type == :recv and @data[2,9] == "+++++++++"
+      elsif update_type == :recv and @data[2,7] == "+++++++"
         "creating local"
       elsif update_type == :recv
         "updating local"
-      elsif update_type == :sent and @data[2,9] == "+++++++++"
+      elsif update_type == :sent and @data[2,7] == "+++++++"
         "creating remote"
       elsif update_type == :sent
         "updating remote"
