@@ -11,7 +11,7 @@ describe Rsync do
     end
 
     it "should respond to host" do
-      Rsync.should respond_to(:host) 
+      Rsync.should respond_to(:host)
       Rsync.host.should == 'root@127.0.0.1'
     end
 
@@ -19,7 +19,7 @@ describe Rsync do
       it "prepend the host to the destination" do
         Rsync::Command.stub(:run)
         Rsync.run('/foo1', '/foo2', ["-a"])
-        Rsync::Command.should have_received(:run).with('/foo1', 'root@127.0.0.1:/foo2', ["-a"])
+        Rsync::Command.should have_received(:run).with('"/foo1"', '"root@127.0.0.1:/foo2"', ["-a"])
       end
     end
   end
